@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bar
+  - CheckLose
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Back
+    uniqueID: 3039029111
+    locked: 0
+  - name: Bar
+    uniqueID: 3679151151
+    locked: 0
+  - name: Player
+    uniqueID: 3430494449
+    locked: 0
+  - name: Front
+    uniqueID: 1145462459
+    locked: 0
+  - name: UI
+    uniqueID: 569149847
     locked: 0
