@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bar
   - CheckLose
+  - Wall
   layers:
   - Default
   - TransparentFX
