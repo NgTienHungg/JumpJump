@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class BarSpawner : MonoBehaviour
@@ -15,7 +15,20 @@ public class BarSpawner : MonoBehaviour
     private Vector3 _lastBarPosition;
     private bool _spawnInRight;
 
+    private Transform _playerTrans;
+
+    #region Event
+    private void Awake() {
+        PlayerControl.OnPlayerLanding += RefreshListBar;
+    }
+
+    private void OnDestroy() {
+        PlayerControl.OnPlayerLanding -= RefreshListBar;
+    }
+    #endregion
+
     private void Start() {
+        _playerTrans = FindObjectOfType<Player>().transform;
         _listBar = new List<Bar> {
             CreateFirstBar()
         };
@@ -23,7 +36,16 @@ public class BarSpawner : MonoBehaviour
     }
 
     private void RefreshListBar() {
+        // disappear Bars above Player
+        while (_listBar.Count != 0 && _listBar[0].transform.position.y > _playerTrans.position.y) {
+            _listBar[0].GetComponent<BarAnimation>().Disappear(true);
+            _listBar.RemoveAt(0);
+            Debug.Log("Remove bar");
+        }
+
+        // fill list
         while (_listBar.Count < _numberOfBars) {
+            Debug.Log("Add bar in list");
             _listBar.Add(CreateBar());
         }
     }

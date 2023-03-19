@@ -11,6 +11,10 @@ public class BarCollision : MonoBehaviour
         _movement = GetComponent<BarMovement>();
     }
 
+    public void Reset() {
+        _collider.isTrigger = false;
+    }
+
     public void IgnoreCollisionsWithPlayer() {
         _collider.isTrigger = true;
     }

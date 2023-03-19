@@ -28,6 +28,7 @@ public class UI_GameOver : MonoBehaviour
     }
 
     public void OnReplayButton() {
+        PoolManager.Instance.RecallAll();
         SceneManager.LoadScene(0);
     }
 }

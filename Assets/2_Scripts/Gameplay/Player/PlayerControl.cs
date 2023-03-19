@@ -11,6 +11,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float _jumpForce;
 
     [ShowInInspector, ReadOnly] private bool _onGround;
+    [ShowInInspector, ReadOnly] private bool _canJump;
 
     private Rigidbody2D _rigidbody;
 
@@ -19,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     private void Update() {
-        if (!_onGround) {
+        if (!_onGround || !_canJump) {
             return;
         }
         if (Input.GetMouseButtonDown(0) && !Extensions.IsOverUI()) {
@@ -29,9 +30,11 @@ public class PlayerControl : MonoBehaviour
 
     private void Jump() {
         _onGround = false;
+        _canJump = false;
 
         transform.parent = null;
 
+        _rigidbody.velocity = new Vector2(0f, _rigidbody.velocity.y); // clear velo x
         _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
 
         OnPlayerJump?.Invoke();
@@ -39,6 +42,7 @@ public class PlayerControl : MonoBehaviour
 
     private void Landing(Transform barParent) {
         _onGround = true;
+        this.Wait(250, () => _canJump = true); // wait camera follow
 
         transform.parent = barParent;
 
@@ -53,7 +57,8 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void OnCollisionExit2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Bar")) {
-            collision.gameObject.GetComponent<BarCollision>().IgnoreCollisionsWithPlayer();
+            var barCollision = collision.gameObject.GetComponent<BarCollision>();
+            barCollision.IgnoreCollisionsWithPlayer();
         }
     }
 
